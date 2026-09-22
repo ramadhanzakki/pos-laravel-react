@@ -7,8 +7,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 interface props{
-    products: Product,
-    categories: Category
+    products: Product[],
+    categories: Category[]
 }
 
 export default function ProductIndex({ products, categories }: props) {
@@ -63,7 +63,7 @@ export default function ProductIndex({ products, categories }: props) {
                                     </td>
                                 </tr>
                             )}
-                            {products.map((product) => {
+                            {products.map((product) => (
                                 <tr key={product.id} className="border-b last:border-0 hover:bg-muted/25">
                                     <td className="px-4 py-3 font-medium">{product.name}</td>
                                     <td className="px-4 py-3 text-muted-foreground">{product.category.name}</td>
@@ -86,7 +86,7 @@ export default function ProductIndex({ products, categories }: props) {
                                         </Button>
                                     </td>
                                 </tr>
-                            })}
+                            ))}
                         </tbody>
                     </table>
                 </div>
