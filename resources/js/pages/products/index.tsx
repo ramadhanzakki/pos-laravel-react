@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Category, Product } from "@/types";
 import { router } from "@inertiajs/react";
 import { Plus } from "lucide-react";
@@ -36,10 +37,10 @@ export default function ProductIndex({ products, categories }: props) {
             <div className="p-6">
                 <div className="mb-4 flex items-center justify-between">
                     <h1 className="text-2xl font-bold">Products</h1>
-                    <button onClick={() => { setEditing(null); setShowForm(true) }}>
+                    <Button onClick={() => { setEditing(null); setShowForm(true) }}>
                         <Plus className="mr-2 h4 w-4"/>
                         Add Product
-                    </button>
+                    </Button>
                 </div>
             </div>
         </>
