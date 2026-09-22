@@ -9,6 +9,8 @@ export interface Category{
 }
 
 export interface Product{
+    map(arg0: (product: any) => void): import("react").ReactNode;
+    length: number;
     id: number,
     category_id: number,
     name: string,
