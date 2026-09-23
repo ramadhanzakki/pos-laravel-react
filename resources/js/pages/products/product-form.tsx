@@ -101,7 +101,7 @@ export default function ProductForm({product, categories, onClose}: props) {
                     <div className="flex items-center gap-2">
                         <input type="checkbox" id="is_active" checked={data.is_active}
                             onClick={e => setData('is_active', e.currentTarget.checked)}/>
-                        <InputError message={errors.is_active}/>
+                        <Label htmlFor="is_active">Active (visible in POS)</Label>
                     </div>
                 </form>
             </DialogContent>
