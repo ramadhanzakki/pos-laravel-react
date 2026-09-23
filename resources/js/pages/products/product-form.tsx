@@ -6,6 +6,7 @@ import { Category, Product } from "@/types";
 import { useForm } from "@inertiajs/react";
 import { Dialog, DialogContent, DialogTitle } from "@radix-ui/react-dialog";
 import { Label } from "@radix-ui/react-label";
+import { Target } from "lucide-react";
 import { FormEvent } from "react";
 import { toast } from "sonner";
 
@@ -88,6 +89,13 @@ export default function ProductForm({product, categories, onClose}: props) {
                         <Input id="desc" value={data.description} 
                             onChange={e => setData('description', e.target.value)}/>
                         <InputError message={errors.description}/>
+                    </div>
+
+                    <div>
+                        <Label htmlFor="image">Image (Optional)</Label>
+                        <Input id="image" type="file" accept="image/*"
+                            onChange={e => setData('image', e.target.files?.[0] ?? null)}/>
+                        <InputError message={errors.image}/>
                     </div>
                 </form>
             </DialogContent>
