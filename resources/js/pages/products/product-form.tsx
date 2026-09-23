@@ -5,19 +5,19 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Category, Product } from "@/types";
 import { useForm } from "@inertiajs/react";
-import { Dialog, DialogContent, DialogTitle } from "@radix-ui/react-dialog";
-import { Label } from "@radix-ui/react-label";
-import { Target } from "lucide-react";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { FormEvent } from "react";
 import { toast } from "sonner";
 
 interface props{
     product?: Product | null,
-    categories: Category,
+    categories: Category[],
+    open: boolean,
     onClose: () => void
 }
 
-export default function ProductForm({product, categories, onClose}: props) {
+export default function ProductForm({product, categories, open, onClose}: props) {
     const { data, setData, post, put, processing, errors, reset } = useForm({
         name: product?.name ?? '',
         category_id: product?.category_id?.toString() ?? '',
@@ -31,20 +31,19 @@ export default function ProductForm({product, categories, onClose}: props) {
     function submit(e: FormEvent) {
         e.preventDefault();
         const opts = {
-            forceFromData: true,
-            onsuccess: () => {
+            forceFormData: true,
+            onSuccess: () => {
                 toast.success(product ? 'Product Updated' : 'Product Added')
                 reset()
                 onClose()
             },
             preserveScroll: true
         };
-        product ? put(`/products/${product.id}`, opts) : post('/products/', opts);
+        product ? put(`/products/${product.id}`, opts) : post('/products', opts);
     }
 
     return(
-        <>
-        <Dialog open onOpenChange={onClose}>
+        <Dialog open={open} onOpenChange={onClose}>
             <DialogContent className="max-w-lg">
                 <DialogHeader>
                     <DialogTitle>{product ? 'Edit Product' : 'Add Product'}</DialogTitle>
@@ -58,9 +57,9 @@ export default function ProductForm({product, categories, onClose}: props) {
                     </div>
 
                     <div>
-                        <label>Category</label>
+                        <Label htmlFor="category">Category</Label>
                         <Select value={data.category_id} onValueChange={v => setData('category_id', v)}>
-                            <SelectTrigger><SelectValue placeholder="Select Category"/></SelectTrigger>
+                            <SelectTrigger id="category"><SelectValue placeholder="Select Category"/></SelectTrigger>
                             <SelectContent>
                                 {categories.map(c => (
                                     <SelectItem key={c.id} value={c.id.toString()}>{c.name}</SelectItem>
@@ -73,7 +72,7 @@ export default function ProductForm({product, categories, onClose}: props) {
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <Label htmlFor="price">Price (Rp)</Label>
-                            <Input id="price" type="number" step="0.01" min="0.01" value={data.price} 
+                            <Input id="price" type="number" step="0.01" min="0.01" value={data.price}
                                 onChange={e => setData('price', e.target.value)}/>
                             <InputError message={errors.price}/>
                         </div>
@@ -87,7 +86,7 @@ export default function ProductForm({product, categories, onClose}: props) {
 
                     <div>
                         <Label htmlFor="desc">Description</Label>
-                        <Input id="desc" value={data.description} 
+                        <Input id="desc" value={data.description}
                             onChange={e => setData('description', e.target.value)}/>
                         <InputError message={errors.description}/>
                     </div>
@@ -101,20 +100,18 @@ export default function ProductForm({product, categories, onClose}: props) {
 
                     <div className="flex items-center gap-2">
                         <input type="checkbox" id="is_active" checked={data.is_active}
-                            onClick={e => setData('is_active', e.currentTarget.checked)}/>
+                            onChange={e => setData('is_active', e.target.checked)}/>
                         <Label htmlFor="is_active">Active (visible in POS)</Label>
                     </div>
 
                     <div className="flex justify-end gap-2 pt-2">
                         <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
-                        <Button type="button" disabled={processing}>
+                        <Button type="submit" disabled={processing}>
                             {processing ? 'Saving...' : product ? 'Edit Product' : 'Add Product'}
                         </Button>
-                        
                     </div>
                 </form>
             </DialogContent>
         </Dialog>
-        </>
     );
 }

@@ -16,7 +16,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('categories')
+        $products = Product::with('category')
                     ->latest()
                     ->get();
 

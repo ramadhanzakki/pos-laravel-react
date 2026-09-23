@@ -2,9 +2,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Category, Product } from "@/types";
 import { router } from "@inertiajs/react";
-import { Ghost, Pencil, Plus, Trash2 } from "lucide-react";
+import { Pencil, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import ProductForm from "./product-form";
 
 interface props{
     products: Product[],
@@ -16,14 +17,14 @@ export default function ProductIndex({ products, categories }: props) {
     const [ showForm, setShowForm ] = useState(false);
     const [ editing, setEditing ] = useState<Product|null>(null);
 
-    function handleEdit(products:Product) {
+    function handleEdit(product: Product) {
         setShowForm(true)
-        setEditing(products)
+        setEditing(product)
     }
 
-    function handleDelete(products:Product) {
-        if (!confirm(`Delete ${products.name}?`)) return
-        router.delete(`/products/${products.id}`, {
+    function handleDelete(product: Product) {
+        if (!confirm(`Delete ${product.name}?`)) return
+        router.delete(`/products/${product.id}`, {
             onSuccess: () => toast.success("Product deleted")
         })
     }
@@ -39,7 +40,7 @@ export default function ProductIndex({ products, categories }: props) {
                 <div className="mb-4 flex items-center justify-between">
                     <h1 className="text-2xl font-bold">Products</h1>
                     <Button onClick={() => { setEditing(null); setShowForm(true) }}>
-                        <Plus className="mr-2 h4 w-4"/>
+                        <Plus className="mr-2 h-4 w-4"/>
                         Add Product
                     </Button>
                 </div>
@@ -57,7 +58,7 @@ export default function ProductIndex({ products, categories }: props) {
                         </thead>
                         <tbody>
                             {products.length === 0 && (
-                                <tr >
+                                <tr>
                                     <td colSpan={6} className="px-8 py-6 text-center text-muted-foreground">
                                         No products yet. Click "Add Product" to get started
                                     </td>
@@ -72,16 +73,16 @@ export default function ProductIndex({ products, categories }: props) {
                                         {product.stock}
                                         {product.stock === 0 && <span className="ml-1 text-xs text-destructive">(out)</span>}
                                     </td>
-                                    <td className="px-4 py3 text-center">
+                                    <td className="px-4 py-3 text-center">
                                         <Badge variant={product.is_active ? 'default' : 'secondary'}>
                                             {product.is_active ? 'Active' : 'Inactive'}
                                         </Badge>
                                     </td>
-                                    <td className="px-4 py3 text-right">
+                                    <td className="px-4 py-3 text-right">
                                         <Button variant="ghost" size="icon" onClick={() => handleEdit(product)}>
                                             <Pencil className="h-4 w-4"/>
                                         </Button>
-                                        <Button variant="ghost" size='icon' onClick={() => {handleDelete(product)}}>
+                                        <Button variant="ghost" size='icon' onClick={() => handleDelete(product)}>
                                             <Trash2 className="h-4 w-4"/>
                                         </Button>
                                     </td>
@@ -91,17 +92,15 @@ export default function ProductIndex({ products, categories }: props) {
                     </table>
                 </div>
             </div>
-            {
-                <ProductForm
-                    categories={categories}
-                    product={editing}
-                    onClose={handleClose}
-                />
-            }
+
+            <ProductForm
+                categories={categories}
+                product={editing}
+                open={showForm}
+                onClose={handleClose}
+            />
         </>
     )
 }
 
-ProductIndex.layout = {
-    breadcrumbs: [{title: 'Products', href: '/products'}]
-};
+ProductIndex.layout = (page: React.ReactNode) => page;
