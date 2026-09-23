@@ -91,7 +91,17 @@ export default function ProductIndex({ products, categories }: props) {
                     </table>
                 </div>
             </div>
+            {
+                <ProductForm
+                    categories={categories}
+                    product={editing}
+                    onClose={handleClose}
+                />
+            }
         </>
     )
-
 }
+
+ProductIndex.layout = {
+    breadcrumbs: [{title: 'Products', href: '/products'}]
+};
