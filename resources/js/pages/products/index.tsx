@@ -94,6 +94,7 @@ export default function ProductIndex({ products, categories }: props) {
             </div>
 
             <ProductForm
+                key={editing?.id ?? 'new'}
                 categories={categories}
                 product={editing}
                 open={showForm}
