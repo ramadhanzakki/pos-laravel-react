@@ -19,7 +19,7 @@ export default function ProductForm({product, categories, onClose}: props) {
     const { data, setData, post, put, processing, errors, reset } = useForm({
         name: product?.name ?? '',
         category_id: product?.category_id?.toString() ?? '',
-        desctiption: product?.description ?? '',
+        description: product?.description ?? '',
         price: product?.price ?? '',
         stock: product?.stock?.toString() ?? '0',
         is_active: product?.is_active ?? true,
@@ -79,11 +79,16 @@ export default function ProductForm({product, categories, onClose}: props) {
                             <Label htmlFor="stock">Stock</Label>
                             <Input id="stock" type="number" min="0" value={data.stock}
                                 onChange={e => setData('stock', e.target.value)}/>
-                            <InputError message={errors.name}/>
+                            <InputError message={errors.stock}/>
                         </div>
                     </div>
 
-                    
+                    <div>
+                        <Label htmlFor="desc">Description</Label>
+                        <Input id="desc" value={data.description} 
+                            onChange={e => setData('description', e.target.value)}/>
+                        <InputError message={errors.description}/>
+                    </div>
                 </form>
             </DialogContent>
         </Dialog>
