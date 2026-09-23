@@ -1,4 +1,5 @@
 import InputError from "@/components/input-error";
+import { Button } from "@/components/ui/button";
 import { DialogHeader } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -102,6 +103,14 @@ export default function ProductForm({product, categories, onClose}: props) {
                         <input type="checkbox" id="is_active" checked={data.is_active}
                             onClick={e => setData('is_active', e.currentTarget.checked)}/>
                         <Label htmlFor="is_active">Active (visible in POS)</Label>
+                    </div>
+
+                    <div className="flex justify-end gap-2 pt-2">
+                        <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
+                        <Button type="button" disabled={processing}>
+                            {processing ? 'Saving...' : product ? 'Edit Product' : 'Add Product'}
+                        </Button>
+                        
                     </div>
                 </form>
             </DialogContent>
