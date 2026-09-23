@@ -97,6 +97,12 @@ export default function ProductForm({product, categories, onClose}: props) {
                             onChange={e => setData('image', e.target.files?.[0] ?? null)}/>
                         <InputError message={errors.image}/>
                     </div>
+
+                    <div className="flex items-center gap-2">
+                        <input type="checkbox" id="is_active" checked={data.is_active}
+                            onClick={e => setData('is_active', e.currentTarget.checked)}/>
+                        <InputError message={errors.is_active}/>
+                    </div>
                 </form>
             </DialogContent>
         </Dialog>
