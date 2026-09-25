@@ -13,7 +13,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return inertia('category/index', [
+        return inertia('categories/index', [
             'categories' => Category::withCount('products')->orderBy('name')->get()
         ]);
     }
@@ -32,7 +32,7 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request)
     {
         Category::create($request->validated());
-        return redirect()->route('category.index');
+        return redirect()->route('categories.index');
     }
 
     /**
@@ -57,7 +57,7 @@ class CategoryController extends Controller
     public function update(UpdateCategoryRequest $request, Category $category)
     {
         $category->update($request->validated());
-        return redirect()->route('category.index');
+        return redirect()->route('categories.index');
     }
 
     /**
@@ -66,6 +66,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return redirect()->route('category.index');
+        return redirect()->route('categories.index');
     }
 }
