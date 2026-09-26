@@ -100,7 +100,7 @@ export default function CategoryIndex({categories}:props) {
                                 </tr>
                             )}
                             {categories.map(cat => (
-                                <tr>
+                                <tr key={cat.id}>
                                     <td className="px-4 py-3 font-medium">{cat.name}</td>
                                     <td className="px-4 py-3 text-muted-foreground">{cat.description ?? '-'}</td>
                                     <td className="px-4 py-3 text-right">{cat.products_count}</td>
