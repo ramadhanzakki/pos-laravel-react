@@ -105,7 +105,7 @@ export default function CategoryIndex({categories}:props) {
                                     <td className="px-4 py-3 text-muted-foreground">{cat.description ?? '-'}</td>
                                     <td className="px-4 py-3 text-right">{cat.product_count}</td>
                                     <td className="px-4 py-3 text-right">
-                                        <Button variant='ghost' size='icon' onClick={() => {openEdit}}>
+                                        <Button variant='ghost' size='icon' onClick={() => {openEdit(cat)}}>
                                             <Pencil className="h-4 w-4"/>
                                         </Button>
                                         <Button variant='ghost' size='icon' onClick={() => {handleDelete(cat)}}>
@@ -132,7 +132,7 @@ export default function CategoryIndex({categories}:props) {
                                 <InputError message={errors.name}/>
                             </div>
                             <div>
-                                <Label htmlFor="cat-desc">Description:</Label>
+                                <Label htmlFor="cat-desc">Description (optional):</Label>
                                 <Input id="cat-desc" value={data.description}
                                     onChange={e => setData('description', e.target.value)}/>
                                 <InputError message={errors.description}/>
