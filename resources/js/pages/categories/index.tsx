@@ -1,9 +1,13 @@
+import InputError from "@/components/input-error";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Category } from "@/types"
 import { Head, router, useForm } from "@inertiajs/react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { toast } from "sonner";
 
 type CategoryWithCount = Category & { product_count: number };
@@ -50,6 +54,19 @@ export default function CategoryIndex({categories}:props) {
         router.delete(`/categories/${cat.id}`, {
             onSuccess: () => toast.success('Category deleted')
         })
+    }
+
+    function submit(e:React.FormEvent) {
+        e.preventDefault()
+        if (editing) {
+            put(`/cateogories/${editing.id}`, {
+                onSuccess: () => { toast.success('Category updated'); closeForm(); }
+            })
+        } else {
+            post(`/categories`, {
+                onSuccess: () => { toast.success('Category Added'); closeForm(); }
+            })
+        }
     }
 
     return(
@@ -102,8 +119,32 @@ export default function CategoryIndex({categories}:props) {
                 </div>
 
                 { /** Dialog */}
-                <Dialog>
-
+                <Dialog open={showForm} onOpenChange={closeForm}>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>{ editing ? 'Edit Category' : 'Add Cateogry' }</DialogTitle>
+                        </DialogHeader>
+                        <form onSubmit={submit} className="space-y-4">
+                            <div>
+                                <Label htmlFor="cat-name">Name:</Label>
+                                <Input id="cat-name" value={data.name}
+                                    onChange={e => setData('name', e.target.value)}/>
+                                <InputError message={errors.name}/>
+                            </div>
+                            <div>
+                                <Label htmlFor="cat-desc">Description:</Label>
+                                <Input id="cat-desc" value={data.description}
+                                    onChange={e => setData('description', e.target.value)}/>
+                                <InputError message={errors.description}/>
+                            </div>
+                            <div className="flex justify-end gap-2 pt-2">
+                                <Button type="button" variant='outline' onClick={closeForm}>Cancel</Button>
+                                <Button type="submit" disabled={processing}>
+                                    {processing ? 'Saving...' : editing ? 'Update' : 'Create'}
+                                </Button>
+                            </div>
+                        </form>
+                    </DialogContent>
                 </Dialog>
             </div>
         </>
