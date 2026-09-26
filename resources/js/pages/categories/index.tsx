@@ -10,7 +10,7 @@ import { Pencil, Plus, Trash2 } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
-type CategoryWithCount = Category & { product_count: number };
+type CategoryWithCount = Category & { products_count: number };
 
 interface props{
     categories: CategoryWithCount[]
@@ -44,8 +44,8 @@ export default function CategoryIndex({categories}:props) {
     }
 
     function handleDelete(cat:CategoryWithCount) {
-        if (cat.product_count > 0) {
-            toast.error(`Cannot delete "${cat.name}" - it has ${cat.product_count} products(s). Reassign them first`)
+        if (cat.products_count > 0) {
+            toast.error(`Cannot delete "${cat.name}" - it has ${cat.products_count} products(s). Reassign them first`)
             return
         }
 
@@ -103,7 +103,7 @@ export default function CategoryIndex({categories}:props) {
                                 <tr>
                                     <td className="px-4 py-3 font-medium">{cat.name}</td>
                                     <td className="px-4 py-3 text-muted-foreground">{cat.description ?? '-'}</td>
-                                    <td className="px-4 py-3 text-right">{cat.product_count}</td>
+                                    <td className="px-4 py-3 text-right">{cat.products_count}</td>
                                     <td className="px-4 py-3 text-right">
                                         <Button variant='ghost' size='icon' onClick={() => {openEdit(cat)}}>
                                             <Pencil className="h-4 w-4"/>
