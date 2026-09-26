@@ -1,9 +1,10 @@
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Category } from "@/types"
-import { Head, useForm } from "@inertiajs/react";
-import { Plus } from "lucide-react";
+import { Head, router, useForm } from "@inertiajs/react";
+import { Pencil, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 type CategoryWithCount = Category & { product_count: number };
 
@@ -38,6 +39,19 @@ export default function CategoryIndex({categories}:props) {
         setShowForm(false)
     }
 
+    function handleDelete(cat:CategoryWithCount) {
+        if (cat.product_count > 0) {
+            toast.error(`Cannot delete "${cat.name}" - it has ${cat.product_count} products(s). Reassign them first`)
+            return
+        }
+
+        if (!confirm(`Delete category ${cat.name}`)) return
+
+        router.delete(`/categories/${cat.id}`, {
+            onSuccess: () => toast.success('Category deleted')
+        })
+    }
+
     return(
         <>
             <Head title="Categories"/>
@@ -60,8 +74,37 @@ export default function CategoryIndex({categories}:props) {
                                 <th className="px-4 py-3 text-right">Action</th>
                             </tr>
                         </thead>
+                        <tbody>
+                            {categories.length === 0 && (
+                                <tr>
+                                    <td colSpan={4} className="px-4 py-8 text-center text-muted-foreground">
+                                        No Categories yet. Add one to get started
+                                    </td>
+                                </tr>
+                            )}
+                            {categories.map(cat => (
+                                <tr>
+                                    <td className="px-4 py-3 font-medium">{cat.name}</td>
+                                    <td className="px-4 py-3 text-muted-foreground">{cat.description ?? '-'}</td>
+                                    <td className="px-4 py-3 text-right">{cat.product_count}</td>
+                                    <td className="px-4 py-3 text-right">
+                                        <Button variant='ghost' size='icon' onClick={() => {openEdit}}>
+                                            <Pencil className="h-4 w-4"/>
+                                        </Button>
+                                        <Button variant='ghost' size='icon' onClick={() => {handleDelete(cat)}}>
+                                            <Trash2 className="h-4 w-4 text-destructive"/>
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
                     </table>
                 </div>
+
+                { /** Dialog */}
+                <Dialog>
+
+                </Dialog>
             </div>
         </>
     )
