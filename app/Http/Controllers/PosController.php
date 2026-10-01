@@ -14,7 +14,7 @@ class PosController extends Controller
      */
     public function index(): Response
     {
-        $products = Product::with('cateogry')
+        $products = Product::with('category')
                     ->where('is_active', true)
                     ->where('stock', '>', 0)
                     ->orderBy('name')
