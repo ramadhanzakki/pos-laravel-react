@@ -4,6 +4,7 @@ import { Head } from "@inertiajs/react";
 import { LayoutGrid, Link, Search } from "lucide-react";
 import { useState } from "react";
 import ProductGrid from "./product-grid";
+import CartPanel from "./cart-panel";
 
 interface props{
     products: Product[]
