@@ -5,6 +5,7 @@ import { LayoutGrid, Link, Search } from "lucide-react";
 import { useState } from "react";
 import ProductGrid from "./product-grid";
 import CartPanel from "./cart-panel";
+import { useCart } from "./use-cart";
 
 interface props{
     products: Product[]
@@ -12,26 +13,12 @@ interface props{
 
 export default function PosIndex({ products }:props) {
     const [ search, setSearch ] = useState('');
-    const [ cartItem, setCartItem ] = useState<CartItem[]>([])
+    const { items, subTotal, addItem, removeItem, setQuantity, clear } = useCart()
 
     const filtered = products.filter(p => 
         p.name.toLowerCase().includes(search.toLowerCase()) || 
         p.category.name.toLowerCase().includes(search.toLowerCase())
     )
-
-    function addItem(product:Product) {
-        setCartItem(current => {
-            const existing = current.find(item => item.product.id === product.id);
-            if (existing) {
-                return current.map(item => 
-                    item.product.id === product.id
-                    ? {...item, quantity: item.quantity + 1}
-                    : item
-                );
-            }
-            return [...current, { product, quantity: 1 }];
-        })
-    }
 
     return(
         <>
@@ -57,7 +44,13 @@ export default function PosIndex({ products }:props) {
                 {/* Main Area */}
                 <div className="flex flex-1 overflow-hidden">
                     <ProductGrid products={filtered} onAdd={addItem}/>
-                    <CartPanel cart={cartItem} onUpdate={setCartItem}/>
+                    <CartPanel 
+                        items={items}
+                        subtotal={subTotal}
+                        onRemove={removeItem}
+                        onSetQuantity={setQuantity}
+                        onClear={clear}
+                    />
                 </div>
             </div>
         </>
