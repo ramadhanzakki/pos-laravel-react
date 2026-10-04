@@ -45,7 +45,7 @@ export default function ProductGrid({ products, onAdd }: props) {
                                 {product.name}
                             </p>
                             <p className="text-sm font-bold text-primary">
-                                {product.price}
+                                Rp {product.price}
                             </p>
                             <p className="text-xs text-muted-foreground">
                                 {product.stock}

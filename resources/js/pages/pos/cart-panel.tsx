@@ -63,7 +63,7 @@ export default function CartPanel({ items, subtotal, onRemove, onSetQuantity, on
                     className="w-full"
                     size="lg"
                     disabled={items.length === 0}
-                    onClick={onCheckout}
+                    // onClick={onCheckout}
                 >
                     Checkout
                 </Button>
