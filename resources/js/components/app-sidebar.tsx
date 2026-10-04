@@ -33,6 +33,11 @@ const mainNavItems: NavItem[] = [
         href: '/categories',
         icon: Tag,
     },
+    {
+        title: 'Point of Sales',
+        href: '/pos',
+        icon: Tag,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
