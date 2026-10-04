@@ -58,7 +58,7 @@ type cartAction =
             subTotal,
             addItem: (product: Product) => dispatch({type: "ADD", product}),
             removeItem: (productId: number) => dispatch({type: "REMOVE", productId}),
-            setQuantity: (productid: number, quantity: number) => dispatch({type: "SET_QTY", productId, quantity}),
+            setQuantity: (productId: number, quantity: number) => dispatch({type: "SET_QTY", productId, quantity}),
             clear: () => dispatch({type: 'CLEAR'})
         }
     }
