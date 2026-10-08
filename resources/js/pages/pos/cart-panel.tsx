@@ -12,10 +12,11 @@ interface props{
     subtotal: number;
     onRemove: (productId: number) => void;
     onSetQuantity: (productId: number, qty: number) => void;
-    onClear: () => void 
+    onClear: () => void;
+    onCheckout: () => void
 }
 
-export default function CartPanel({ items, subtotal, onRemove, onSetQuantity, onClear }:props) {
+export default function CartPanel({ items, subtotal, onRemove, onSetQuantity, onClear, onCheckout }:props) {
     return (
         <div className="flex w-80 flex-col border-l">
             <div className="flex items-center justify-between border-b px-4 py-3 ">
@@ -63,7 +64,7 @@ export default function CartPanel({ items, subtotal, onRemove, onSetQuantity, on
                     className="w-full"
                     size="lg"
                     disabled={items.length === 0}
-                    // onClick={onCheckout}
+                    onClick={onCheckout}
                 >
                     Checkout
                 </Button>
