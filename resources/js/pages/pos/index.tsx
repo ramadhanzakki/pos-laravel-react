@@ -6,6 +6,7 @@ import { useState } from "react";
 import ProductGrid from "./product-grid";
 import CartPanel from "./cart-panel";
 import { useCart } from "./use-cart";
+import CheckoutDialog from "./checkout-dialog";
 
 interface props{
     products: Product[]
@@ -14,6 +15,7 @@ interface props{
 export default function PosIndex({ products }:props) {
     const [ search, setSearch ] = useState('');
     const { items, subTotal, addItem, removeItem, setQuantity, clear } = useCart()
+    const [ showCheckout, setShowCheckout] = useState(false)
 
     const filtered = products.filter(p => 
         p.name.toLowerCase().includes(search.toLowerCase()) || 
@@ -50,8 +52,17 @@ export default function PosIndex({ products }:props) {
                         onRemove={removeItem}
                         onSetQuantity={setQuantity}
                         onClear={clear}
+                        onCheckout={() => setShowCheckout(true)}
                     />
                 </div>
+
+                <CheckoutDialog
+                    open={showCheckout}
+                    items={items}
+                    subtotal={subTotal}
+                    onSuccess={clear}
+                    onClose={() => setShowCheckout(false)}
+                />
             </div>
         </>
     )
